@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+     <head>
+         <meta charset="utf-8">
+         <title>Card Generator</title>
+         <link rel="stylesheet" type="text/css" href="styles.css">
+         <script src="./handlebars-v4.0.11.js"></script>
+         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+     </head>
+     <body>
+         <div class="main-content">
+             <div class="instructions">
+                 <h3>This is a card generator!</h3>
+                 <p>The idea is pretty simple. You input a JSON file, and a printable set of cards comes out.</p>
+             </div>
+             <span>
+                 <form>
+                     <div>
+                         <textarea style="width:600px;height:200px;" id="input">
+[
+ {
+   "title": "Grim Grimoire",
+   "image": "https://drive.google.com/thumbnail?id=1MEMeoePpvb0LqLQxsGyInke34OlMEH08",
+   "type": "Artifact",
+   "subtype": "Spellbook",
+   "text": "Once on your turn, you may cast a Spell from the discard pile by discarding Creatures from your hand with a total Mana value equal or greater to the Mana value of the Spell being cast. Shuffle the Spell into the deck after.",
+   "mana": "3"
+ },
+  {
+   "title": "Bittermouth, Avatar of Absorbtion",
+   "image": "https://drive.google.com/thumbnail?id=1skvcVVj_5AboxTvTJY39sY8ny_Knm1wQ",
+   "type": "Avatar",
+   "text": "Bittermouth's power increases by 1 for each Creature card in the discard pile, to a max bonus of 6.",
+   "power": "9+"
+ },
+  {
+   "title": "Snowflake Obsidian Ring",
+   "image": "https://drive.google.com/thumbnail?id=19yMCnIfvXhfdu8EyP9w4jtXGebuMrbzj",
+   "type": "Artifact",
+   "element": "Earth/Frost",
+   "subtype": "Ring",
+   "text": "Once during a fight, you may discard a card from your hand to increase to your damage by 2 for the fight. You may also change the type of damage you deal this fight to Earth or Frost.",
+   "mana": "2"
+ },
+ {
+   "title": "Ekmar",
+   "type": "Character",
+   "subtype" : "Warlock",
+   "element" : "Fire",
+   "text": "In a fight, deal 1 Fire damage."
+ },
+ {
+   "title": "Orb of Destruction",
+   "image": "https://drive.google.com/thumbnail?id=17TLNi4xqSpaqPpaiXNLO6GAkCOm_B1lC",
+   "type": "Legendary Orb",
+   "text": "Once during you turn, you may discard a card to destroy an artifact with equal or lesser Mana value than the discarded card."
+ }
+
+]
+                         </textarea>
+                     </div>
+                     <div class="button">
+                         <button type="button" onclick="generate(input)">Generate!</button>
+                     </div>
+                 </form>
+             </span>
+             <script id="card-body" type="text/x-handlebars-template">
+                {{#each cards}}
+                <div class="cardbody" {{#if
+                rarity}}style="border-color:{{border}};"{{/if}}>
+                    <h3>{{{title}}}</h3>
+                    {{#if image}}
+                    <img src="{{image}}"/>
+                    {{/if}}
+                    {{#unless image}}
+                    <div class="img-placeholder"></div>
+                    {{/unless}}
+                    <h4>{{type}}{{#if subtype}} - {{subtype}}{{/if}}{{#if element}} - {{element}}{{/if}}</h4>
+                    <p>{{text}}</p>
+                    {{#if defeat}}
+                    <p><b>Defeat: </b>{{defeat}}</p>
+                    {{/if}}
+                    <div class="stats">
+                        {{#if power}}
+                        <div class="combat">
+                            <h4><i class="fas fa-hand-rock"></i> {{power}}</h4>
+                        </div>
+                        {{/if}}
+                        {{#if treasure}}
+                        <div class="treasure">
+                            <h4><i class="far fa-gem"></i> {{treasure}}</h4>
+                        </div>
+                        {{/if}}
+                        {{#if mana}}
+                        <div class="mana">
+                            <h4><i class="fas fa-magic"></i> {{mana}}</h4>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+                {{/each}}
+             </script>
+             <div id="cards"></div>
+         </div>
+         <script src="./generator.js"></script>
+     </body>
+</html>
